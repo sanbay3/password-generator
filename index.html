@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>パスワードジェネレーター</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔐 パスワードジェネレーター</h1>
+            <p class="subtitle">安全で強力なパスワードを簡単に生成</p>
+        </header>
+
+        <main>
+            <div class="password-display">
+                <div class="password-output" id="passwordOutput">
+                    <span id="passwordText">パスワードがここに表示されます</span>
+                    <button class="copy-btn" id="copyBtn" title="コピー">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="strength-meter">
+                    <div class="strength-label">強度:</div>
+                    <div class="strength-bar">
+                        <div class="strength-fill" id="strengthFill"></div>
+                    </div>
+                    <span class="strength-text" id="strengthText">-</span>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="control-group">
+                    <label for="lengthSlider">
+                        <span>長さ: <span id="lengthValue">16</span></span>
+                    </label>
+                    <input type="range" id="lengthSlider" min="4" max="64" value="16">
+                </div>
+
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="includeUppercase" checked>
+                        <span>大文字 (A-Z)</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="includeLowercase" checked>
+                        <span>小文字 (a-z)</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="includeNumbers" checked>
+                        <span>数字 (0-9)</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="includeSymbols" checked>
+                        <span>記号 (!@#$%...)</span>
+                    </label>
+                </div>
+
+                <button class="generate-btn" id="generateBtn">
+                    <span>パスワードを生成</span>
+                </button>
+            </div>
+
+            <div class="notification" id="notification"></div>
+        </main>
+
+        <footer>
+            <p>2026年 - 毎月1本のWebアプリ制作チャレンジ</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
