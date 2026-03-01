@@ -188,3 +188,16 @@ document.addEventListener('keydown', (e) => {
         generatePassword();
     }
 });
+
+// セキュリティ: ページが閉じられる際にパスワードをクリア
+window.addEventListener('beforeunload', () => {
+    passwordText.textContent = '';
+});
+
+// セキュリティ: ページが非表示になったときにパスワードをクリア（オプション）
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        // ページが非表示になったときはクリアしない（ユーザーが別タブに切り替えただけの可能性があるため）
+        // 必要に応じて有効化: passwordText.textContent = '';
+    }
+});
