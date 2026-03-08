@@ -104,7 +104,7 @@ function updateStrength(password) {
     } else if (strength <= 4) {
         strengthLabel = '普通';
         strengthClass = 'medium';
-    } else if (strength <= 6) {
+    } else if (strength <= 5) {
         strengthLabel = '強い';
         strengthClass = 'strong';
     } else {
