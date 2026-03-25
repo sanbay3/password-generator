@@ -97,10 +97,15 @@ header h1 {
     font-family: 'Courier New', monospace;
     font-size: 1.2rem;
     font-weight: 600;
-    word-break: break-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: normal;
+    min-width: 0;
     flex: 1;
     color: var(--text-primary);
     min-height: 1.5em;
+    display: inline-block; /* text-overflow: ellipsis を確実に効かせる */
 }
 
 .copy-btn {
@@ -437,5 +442,9 @@ footer .brand {
 
     .subtitle {
         font-size: 0.9rem;
+    }
+
+    #passwordText {
+        font-size: 0.95rem;
     }
 }

@@ -54,6 +54,8 @@ function generatePassword() {
     password = ensureCharacterTypes(password, charset, length);
     
     passwordText.textContent = password;
+    // 表示は省略される場合があるので、全文はツールチップで参照できるようにする
+    passwordText.title = password;
     updateStrength(password);
 }
 
@@ -192,6 +194,7 @@ document.addEventListener('keydown', (e) => {
 // セキュリティ: ページが閉じられる際にパスワードをクリア
 window.addEventListener('beforeunload', () => {
     passwordText.textContent = '';
+    passwordText.title = '';
 });
 
 // セキュリティ: ページが非表示になったときにパスワードをクリア（オプション）
