@@ -59,6 +59,18 @@ function generatePassword() {
     updateStrength(password);
 }
 
+// 暗号論的に安全な乱数で 0 以上 max 未満の整数を返す
+// （棄却サンプリングで剰余による偏りを防ぐ）
+function secureRandomInt(max) {
+    const range = 0x100000000; // 2^32
+    const limit = range - (range % max);
+    const buf = new Uint32Array(1);
+    do {
+        crypto.getRandomValues(buf);
+    } while (buf[0] >= limit);
+    return buf[0] % max;
+}
+
 // 文字タイプが確実に含まれるようにする関数
 function ensureCharacterTypes(password, charset, length) {
     const selectedTypes = [];
@@ -71,8 +83,8 @@ function ensureCharacterTypes(password, charset, length) {
     for (const type of selectedTypes) {
         if (!password.split('').some(char => type.includes(char))) {
             // 含まれていない場合は、ランダムな位置に挿入
-            const randomIndex = Math.floor(Math.random() * password.length);
-            const randomChar = type[Math.floor(Math.random() * type.length)];
+            const randomIndex = secureRandomInt(password.length);
+            const randomChar = type[secureRandomInt(type.length)];
             password = password.substring(0, randomIndex) + randomChar + password.substring(randomIndex + 1);
         }
     }
