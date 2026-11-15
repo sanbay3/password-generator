@@ -40,18 +40,9 @@ function generatePassword() {
     }
     
     const length = parseInt(lengthSlider.value);
-    let password = '';
-    
-    // ランダムなパスワードを生成
-    const array = new Uint32Array(length);
-    crypto.getRandomValues(array);
-    
-    for (let i = 0; i < length; i++) {
-        password += charset[array[i] % charset.length];
-    }
-    
-    // 選択された文字タイプがすべて含まれているか確認（最低限の保証）
-    password = ensureCharacterTypes(password, charset, length);
+
+    // 選択された文字タイプをすべて含むランダムなパスワードを生成
+    const password = ensureCharacterTypes(charset, length);
     
     passwordText.textContent = password;
     // 表示は省略される場合があるので、全文はツールチップで参照できるようにする
@@ -71,25 +62,30 @@ function secureRandomInt(max) {
     return buf[0] % max;
 }
 
-// 文字タイプが確実に含まれるようにする関数
-function ensureCharacterTypes(password, charset, length) {
+// 選択された文字タイプがすべて含まれるパスワードを生成する関数
+// 各タイプから1文字ずつ選び、残りを charset 全体から埋めてからシャッフルする
+function ensureCharacterTypes(charset, length) {
     const selectedTypes = [];
     if (includeUppercase.checked) selectedTypes.push(uppercase);
     if (includeLowercase.checked) selectedTypes.push(lowercase);
     if (includeNumbers.checked) selectedTypes.push(numbers);
     if (includeSymbols.checked) selectedTypes.push(symbols);
-    
-    // 各タイプが少なくとも1文字含まれているか確認
-    for (const type of selectedTypes) {
-        if (!password.split('').some(char => type.includes(char))) {
-            // 含まれていない場合は、ランダムな位置に挿入
-            const randomIndex = secureRandomInt(password.length);
-            const randomChar = type[secureRandomInt(type.length)];
-            password = password.substring(0, randomIndex) + randomChar + password.substring(randomIndex + 1);
-        }
+
+    // 各タイプから1文字ずつ（長さの最小値4 ≥ タイプ数4 なので必ず収まる）
+    const chars = selectedTypes.map(type => type[secureRandomInt(type.length)]);
+
+    // 残りを charset 全体から埋める
+    while (chars.length < length) {
+        chars.push(charset[secureRandomInt(charset.length)]);
     }
-    
-    return password;
+
+    // Fisher-Yates シャッフル（必須文字の位置が固定されないように）
+    for (let i = chars.length - 1; i > 0; i--) {
+        const j = secureRandomInt(i + 1);
+        [chars[i], chars[j]] = [chars[j], chars[i]];
+    }
+
+    return chars.join('');
 }
 
 // パスワード強度の計算と表示
